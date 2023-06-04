@@ -1,5 +1,6 @@
 package com.example.prjcrud;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     DbAmigosAdapter adapter;
+
+    DbAmigo amigoAlterado = null;
+    private int getIndex(Spinner spinner, String myString) {
+        int index = 0;
+        for (int i=0;(i<spinner.getCount())&&!(spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString));i++);
+        return index;
+    }
+
 
     private void configurarRecycler() {
         // Ativando o layou para uma lista tipo RecyclerView e configurando-a
@@ -52,7 +62,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+            if(intent.hasExtra("amigo")){
+                findViewById(R.id.include_cadastro).setVisibility(View.VISIBLE);
+                findViewById(R.id.include_listagem).setVisibility(View.INVISIBLE);
+                findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+                amigoAlterado = (DbAmigo) intent.getSerializableExtra("amigo");
+                EditText edtNome    = (EditText)findViewById(R.id.edtNome);
+                EditText edtCelular = (EditText)findViewById(R.id.edtCelular);
+
+                edtNome.setText(amigoAlterado.getNome());
+                edtCelular.setText(amigoAlterado.getCelular());
+                int status = 2;
+            }
+
+
+                setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
 /*
@@ -92,12 +118,15 @@ public class MainActivity extends AppCompatActivity {
                 String nome = edtNome.getText().toString();
                 String celular = edtCelular.getText().toString();
                 int situacao = 1;
-
+/*
 // Gravando no banco de dados
                 DbAmigosDAO dao = new DbAmigosDAO(getBaseContext());
                 boolean sucesso = dao.salvar(nome, celular, situacao);
                 if (sucesso)
                 {
+                    DbAmigo amigo = dao.ultimoAmigo();
+                    adapter.inserirAmigo(amigo);
+
                     Snackbar.make(view, "Dados de ["+nome+"] salvos com sucesso!", Snackbar.LENGTH_LONG)
                             .setAction("Ação", null).show();
 
@@ -112,6 +141,26 @@ public class MainActivity extends AppCompatActivity {
                 {
                     Snackbar.make(view, "Erro ao salvar, consulte o log!", Snackbar.LENGTH_LONG)
                             .setAction("Ação", null).show();
+                }
+*/
+                // Gravando no banco de dados
+                DbAmigosDAO dao = new DbAmigosDAO(getBaseContext());
+                boolean sucesso;
+                if(amigoAlterado != null) {
+                    sucesso = dao.salvar(amigoAlterado.getId(), nome, celular, 2);
+                } else {
+                    sucesso = dao.salvar(nome, celular, 1);
+                }
+                if (sucesso) {
+                    DbAmigo amigo = dao.ultimoAmigo();
+
+                    if (amigoAlterado != null) {
+                        adapter.atualizarAmigo(amigo);
+                        amigoAlterado = null;
+                        configurarRecycler();
+                    } else {
+                        adapter.inserirAmigo(amigo);
+                    }
                 }
             }
         });
