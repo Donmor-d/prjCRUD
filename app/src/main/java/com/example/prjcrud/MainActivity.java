@@ -64,21 +64,22 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         Intent intent = getIntent();
-            if(intent.hasExtra("amigo")){
-                findViewById(R.id.include_cadastro).setVisibility(View.VISIBLE);
-                findViewById(R.id.include_listagem).setVisibility(View.INVISIBLE);
-                findViewById(R.id.fab).setVisibility(View.INVISIBLE);
-                amigoAlterado = (DbAmigo) intent.getSerializableExtra("amigo");
-                EditText edtNome    = (EditText)findViewById(R.id.edtNome);
-                EditText edtCelular = (EditText)findViewById(R.id.edtCelular);
+        if(intent.hasExtra("amigo")){
+            System.out.println("id includecadastro: " + R.id.include_cadastro);
+            System.out.println("View: " + findViewById(R.id.include_cadastro));
+            findViewById(R.id.include_cadastro).setVisibility(View.VISIBLE);
+            findViewById(R.id.include_listagem).setVisibility(View.INVISIBLE);
+            findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+            amigoAlterado = (DbAmigo) intent.getSerializableExtra("amigo");
+            EditText edtNome    = (EditText)findViewById(R.id.edtNome);
+            EditText edtCelular = (EditText)findViewById(R.id.edtCelular);
 
-                edtNome.setText(amigoAlterado.getNome());
-                edtCelular.setText(amigoAlterado.getCelular());
-                int status = 2;
-            }
+            edtNome.setText(amigoAlterado.getNome());
+            edtCelular.setText(amigoAlterado.getCelular());
+            int status = 2;
+        }
 
-
-                setContentView(binding.getRoot());
+        setContentView(binding.getRoot());
 
         setSupportActionBar(binding.toolbar);
 /*

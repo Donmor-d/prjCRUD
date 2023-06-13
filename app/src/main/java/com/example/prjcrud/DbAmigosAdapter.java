@@ -24,18 +24,20 @@ public class DbAmigosAdapter extends RecyclerView.Adapter<DbAmigosHolder> {
     public DbAmigosAdapter(List<DbAmigo> amigos) {
         this.amigos = amigos;
     }
-// Este método retorna o layout criado pela ViewHolder, inflado numa view
-
+    // Este método retorna o layout criado pela ViewHolder, inflado numa view
     @Override
     public DbAmigosHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new DbAmigosHolder(LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.activity_dados_amigo, parent, false));
     }
-// Recebe a ViewHolder e a posição da lista, de forma que um objeto da lista é recuperado pela posição e associado a ela - é o foco da ação para acontecer o processo
 
+    // Recebe a ViewHolder e a posição da lista, de forma que um objeto da lista é recuperado pela posição e associado a ela - é o foco da ação para acontecer o processo
     @Override
     public void onBindViewHolder(DbAmigosHolder holder, int position) {
+        System.out.println("pos: " + position + " max length amigos: " + amigos.size());
+
         final DbAmigo amigo = amigos.get(position);
+
 
         holder.nmAmigo.setText(amigos.get(position).getNome());
         holder.vlCelular.setText(amigos.get(position).getCelular());
