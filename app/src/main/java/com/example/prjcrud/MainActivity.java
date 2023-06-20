@@ -26,6 +26,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -48,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView)findViewById(R.id.recyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-// Preparando o adapter para associar os objetos à lista.
+        // Preparando o adapter para associar os objetos à lista.
 
         DbAmigosDAO dao = new DbAmigosDAO(this);
         adapter = new DbAmigosAdapter(dao.listarAmigos());
@@ -57,48 +63,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-        @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
 
         Intent intent = getIntent();
+
+        //Update Amigo?
         if(intent.hasExtra("amigo")){
             System.out.println("id includecadastro: " + R.id.include_cadastro);
-            System.out.println("View: " + findViewById(R.id.include_cadastro));
-            findViewById(R.id.include_cadastro).setVisibility(View.VISIBLE);
+            System.out.println("View: " + (View) findViewById(R.id.include_cadastro));
+
+
             findViewById(R.id.include_listagem).setVisibility(View.INVISIBLE);
+            findViewById(R.id.include_cadastro).setVisibility(View.VISIBLE);
             findViewById(R.id.fab).setVisibility(View.INVISIBLE);
+
             amigoAlterado = (DbAmigo) intent.getSerializableExtra("amigo");
             EditText edtNome    = (EditText)findViewById(R.id.edtNome);
             EditText edtCelular = (EditText)findViewById(R.id.edtCelular);
 
             edtNome.setText(amigoAlterado.getNome());
             edtCelular.setText(amigoAlterado.getCelular());
-            int status = 2;
+            int status = 20;
         }
 
         setContentView(binding.getRoot());
-
         setSupportActionBar(binding.toolbar);
-/*
+
+        /*
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-*/
+        */
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("id includecadastro: " + R.id.include_cadastro);
+                System.out.println("View: " + (View) findViewById(R.id.include_cadastro));
+
                 findViewById(R.id.include_listagem).setVisibility(View.INVISIBLE);
                 findViewById(R.id.include_cadastro).setVisibility(View.VISIBLE);
                 findViewById(R.id.fab).setVisibility(View.INVISIBLE);
             }
         });
+
         Button btnCancelar = (Button)findViewById(R.id.btnCancelar);
         btnCancelar.setOnClickListener(new Button.OnClickListener() {
-            @Override
+        @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Cancelando...", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -108,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+
         Button btnSalvar = (Button)findViewById(R.id.btnSalvar);
         btnSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,12 +133,13 @@ public class MainActivity extends AppCompatActivity {
                 // Sincronizando os campos com o contexto
                 EditText edtNome = (EditText) findViewById (R.id.edtNome);
                 EditText edtCelular = (EditText) findViewById (R.id.edtCelular);
-// Adaptando atributos
+                // Adaptando atributos
                 String nome = edtNome.getText().toString();
                 String celular = edtCelular.getText().toString();
                 int situacao = 1;
-/*
-// Gravando no banco de dados
+
+                /*
+                // Gravando no banco de dados
                 DbAmigosDAO dao = new DbAmigosDAO(getBaseContext());
                 boolean sucesso = dao.salvar(nome, celular, situacao);
                 if (sucesso)
@@ -143,15 +162,19 @@ public class MainActivity extends AppCompatActivity {
                     Snackbar.make(view, "Erro ao salvar, consulte o log!", Snackbar.LENGTH_LONG)
                             .setAction("Ação", null).show();
                 }
-*/
+                */
+
                 // Gravando no banco de dados
+
                 DbAmigosDAO dao = new DbAmigosDAO(getBaseContext());
                 boolean sucesso;
+
                 if(amigoAlterado != null) {
-                    sucesso = dao.salvar(amigoAlterado.getId(), nome, celular, 2);
+                    sucesso = dao.salvar(amigoAlterado.getId(), nome, celular, 20);
                 } else {
-                    sucesso = dao.salvar(nome, celular, 1);
+                    sucesso = dao.salvar(nome, celular, 10);
                 }
+
                 if (sucesso) {
                     DbAmigo amigo = dao.ultimoAmigo();
 
@@ -159,10 +182,12 @@ public class MainActivity extends AppCompatActivity {
                         adapter.atualizarAmigo(amigo);
                         amigoAlterado = null;
                         configurarRecycler();
-                    } else {
+                    }
+                    else {
                         adapter.inserirAmigo(amigo);
                     }
                 }
+
             }
         });
 
