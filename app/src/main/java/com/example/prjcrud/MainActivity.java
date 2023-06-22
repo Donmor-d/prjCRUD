@@ -67,7 +67,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
 
         Intent intent = getIntent();
 
@@ -90,8 +94,7 @@ public class MainActivity extends AppCompatActivity {
             int status = 20;
         }
 
-        setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
+
 
         /*
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
@@ -186,6 +189,15 @@ public class MainActivity extends AppCompatActivity {
                     else {
                         adapter.inserirAmigo(amigo);
                     }
+
+                    //Give feedback it worked
+                    Snackbar.make(view, "Amigo: " + amigo.getNome() + "  foi salvo!", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
+                    //Load listagem view back for better UX
+                    findViewById(R.id.include_listagem).setVisibility(View.VISIBLE);
+                    findViewById(R.id.include_cadastro).setVisibility(View.INVISIBLE);
+                    findViewById(R.id.fab).setVisibility(View.VISIBLE);
                 }
 
             }
