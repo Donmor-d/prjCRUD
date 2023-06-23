@@ -23,12 +23,12 @@
     <include
         android:id="@+id/include_listagem"
         layout="@layout/activity_listagem"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <include
         android:id="@+id/include_cadastro"
         layout="@layout/activity_cadastrar_amigo"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -38,5 +38,15 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
         app:srcCompat="@android:drawable/ic_input_add" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabRedo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
