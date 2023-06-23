@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                 // Adaptando atributos
                 String nome = edtNome.getText().toString();
                 String celular = edtCelular.getText().toString();
-                int situacao = 1;
+                int status = 10;
 
                 /*
                 // Gravando no banco de dados
@@ -173,9 +173,10 @@ public class MainActivity extends AppCompatActivity {
                 boolean sucesso;
 
                 if(amigoAlterado != null) {
-                    sucesso = dao.salvar(amigoAlterado.getId(), nome, celular, 20);
+                    status = 20;
+                    sucesso = dao.salvar(amigoAlterado.getId(), nome, celular, status);
                 } else {
-                    sucesso = dao.salvar(nome, celular, 10);
+                    sucesso = dao.salvar(nome, celular, status);
                 }
 
                 if (sucesso) {

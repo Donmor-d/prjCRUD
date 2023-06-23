@@ -35,14 +35,21 @@ public class DbAmigosDAO {
     }
 
     public boolean excluir(int id){
-        return gw.getDatabase().delete(TABLE_AMIGOS, "ID=?", new String[]{ id + "" }) > 0;
+        //Old method by harshly removing entry
+        //return gw.getDatabase().delete(TABLE_AMIGOS, "ID=?", new String[]{ id + "" }) > 0;
+
+        ContentValues cv = new ContentValues();
+        cv.put("Status", 30);
+        int rowsAffected;
+        rowsAffected = gw.getDatabase().update(TABLE_AMIGOS, cv, "ID=?",new String[]{ id + ""});
+        return  rowsAffected > 0;
     }
 
 
 
     public List<DbAmigo> listarAmigos(){
         List<DbAmigo> amigos = new ArrayList<>();
-        Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Amigos", null);
+        Cursor cursor = gw.getDatabase().rawQuery("SELECT * FROM Amigos WHERE ID NOT IN(30)", null);
 
         while (cursor.moveToNext())
         {
