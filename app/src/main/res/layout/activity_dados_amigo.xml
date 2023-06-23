@@ -50,10 +50,11 @@
                 app:srcCompat="@android:drawable/ic_menu_edit" />
 
             <ImageButton
-                android:id="@+id/btnRecuperar"
+                android:id="@+id/btnRedo"
                 android:layout_width="71dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:tag="buttonRedo"
                 app:srcCompat="@android:drawable/ic_menu_rotate"
                 tools:visibility="visible" />
 

@@ -11,6 +11,7 @@ public class DbAmigosHolder extends RecyclerView.ViewHolder {
     public TextView    vlCelular;
     public ImageButton btnEditar;
     public ImageButton btnExcluir;
+    public ImageButton btnRedo;
 
     public DbAmigosHolder(View itemView) {
         super(itemView);
@@ -18,6 +19,7 @@ public class DbAmigosHolder extends RecyclerView.ViewHolder {
         vlCelular = (TextView) itemView.findViewById(R.id.vlCelular);
         btnEditar = (ImageButton) itemView.findViewById(R.id.btnEditar);
         btnExcluir = (ImageButton) itemView.findViewById(R.id.btnExcluir);
+        btnRedo = (ImageButton) itemView.findViewById(R.id.btnRedo);
     }
 }
 

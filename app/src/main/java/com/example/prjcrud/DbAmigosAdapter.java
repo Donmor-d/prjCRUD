@@ -52,6 +52,27 @@ public class DbAmigosAdapter extends RecyclerView.Adapter<DbAmigosHolder> {
                 activity.startActivity(intent);
             }
         });
+
+        holder.btnRedo.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = getActivity(v);
+                Intent intent = activity.getIntent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+                View root = v.findViewById(R.id.btnRedo).getRootView();
+                /*
+                List<View> buttonsRedo;
+
+
+                System.out.println("Buttons:" + buttonsRedo);
+
+                buttonsRedo.forEach((View button) -> {
+                    button.setVisibility(View.GONE);
+                });
+                */
+            }
+        });
         holder.btnExcluir.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
